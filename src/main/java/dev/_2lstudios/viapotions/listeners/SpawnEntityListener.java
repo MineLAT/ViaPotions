@@ -30,7 +30,13 @@ public class SpawnEntityListener extends PacketAdapter {
 		final PacketContainer packet = event.getPacket();
 		final Entity entity = packet.getEntityModifier(event).read(0);
 
-		if (packet.getIntegers().read(6) == 73 && entity instanceof ThrownPotion) {
+		final int entityData;
+		if (VersionUtil.VERSION >= 19) {
+			entityData = packet.getIntegers().read(4);
+		} else {
+			entityData = packet.getIntegers().read(6);
+		}
+		if (entityData == 73 && entity instanceof ThrownPotion) {
 			final Player player = event.getPlayer();
 			final int version = versionUtil.getVersion(player);
 			final PacketContainer edited = packet.deepClone();
@@ -41,7 +47,11 @@ public class SpawnEntityListener extends PacketAdapter {
 					if (effect.getType().equals(translator.getPotionEffectType())) {
 						for (TranslationData data : translator.getDatas()) {
 							if (data.getLowestVersion() <= version && data.getHighestVersion() >= version) {
-								edited.getIntegers().write(7, data.getRemap());
+								if (VersionUtil.VERSION >= 19) {
+									edited.getIntegers().write(4, data.getRemap());
+								} else {
+									edited.getIntegers().write(6, data.getRemap());
+								}
 							}
 						}
 					}
