@@ -1,6 +1,3 @@
-.project
-.vscode
-.settings
-.factorypath
-.classpath
-/target
+.gradle
+.idea
+build

@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url 'https://repo.viaversion.com/' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    mavenCentral()
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.yml'
+        expand(rootProject.properties)
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+
+    compileOnly 'com.viaversion:viaversion-api:4.0.1'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
+
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
